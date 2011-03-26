@@ -24,15 +24,27 @@
 	THE SOFTWARE.*/
 // Description : sllabzzuf 2D video game design project
 //============================================================================
-#include "SDL/SDL.h"
+#include "engine.h"
 
 int main( int argc, char* args[] )
 {
-    //Start SDL
-    SDL_Init( SDL_INIT_EVERYTHING );
+    setvbuf(stdout, NULL, _IONBF, 0);
+	setvbuf(stderr, NULL, _IONBF, 0);
+    Engine game;
 
-    //Quit SDL
-    SDL_Quit();
+    while(game.running())
+    {
+        game.get_time();
+        game.check_events();
+        game.display_stage();
+        if(!game.flip())
+        return -1;
+        game.framerate_limit();
 
+    }
+
+    //game.clean_up();
+    //TTF_CloseFont( font );
+    //TTF_Quit();
     return 0;
 }
