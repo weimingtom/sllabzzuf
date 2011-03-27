@@ -36,7 +36,8 @@ int main( int argc, char* args[] )
     {
         game.get_time();
         game.check_events();
-        game.display_stage();
+        game.update_objects();
+        game.display();
         if(!game.flip())
         return -1;
         game.framerate_limit();

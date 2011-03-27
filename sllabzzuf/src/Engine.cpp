@@ -4,14 +4,15 @@ Engine::Engine(){
     quit=false;
 
     SDL_Init( SDL_INIT_EVERYTHING);
-    SDL_WM_SetCaption( "Fuzzball Game v0.0.1", NULL );
+    SDL_WM_SetCaption( "Fuzzball Game v0.0.2", NULL );
 
     screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, SDL_SWSURFACE);
     if(screen==NULL){
     std::cout << "screen is still NULL\n";
     quit=true;
     }
-    stage.newMap();
+    stage.newMap(player.get_map_filename());
+    player.load_sprite();
     Uint8 *SDL_GetKeyState(int *numkeys);
 
 }
@@ -46,6 +47,20 @@ void Engine::check_events(){
                 quit=true;
             }
         }
+        Uint8 *keystate = SDL_GetKeyState(NULL);
+        if(keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT]){
+        player.set_user_x_move(-5);
+        player.nextFrame();
+        }
+        else if(keystate[SDLK_RIGHT] && !keystate[SDLK_LEFT]){
+        player.set_user_x_move(5);
+        player.nextFrame();
+        }
+        else
+        player.setFrame(2);
+        if(!keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT])
+        player.set_user_x_move(0);
+
 }
 
 void Engine::get_time(){
@@ -53,28 +68,42 @@ void Engine::get_time(){
 }
 
 void Engine::gather_input(){
+    Uint8 *keystate = SDL_GetKeyState(NULL);
     if( event.type == SDL_KEYDOWN )
     {
-    	Uint8 *keystate = SDL_GetKeyState(NULL);
         switch(event.key.keysym.sym){
-            case SDLK_UP:
-				 (stage.get_camera_y() - 32) > 0 ? stage.set_camera_y(stage.get_camera_y() - 32) : stage.set_camera_y(0);
+            case SDLK_z: player.jump(stage);break;
+            case SDLK_x: if(keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT] && !keystate[SDLK_UP] && !keystate[SDLK_DOWN]){
+                            player.dash(3);
+                            }if(!keystate[SDLK_LEFT] && keystate[SDLK_RIGHT] && !keystate[SDLK_UP] && !keystate[SDLK_DOWN]){
+                            player.dash(1);
+                            }if(!keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT] && keystate[SDLK_UP] && !keystate[SDLK_DOWN]){
+                            player.dash(0);
+                            }if(!keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT] && !keystate[SDLK_UP] && keystate[SDLK_DOWN]){
+                            player.dash(2);}break;
+			case SDLK_LEFT: player.set_faceing_left(true);
 				 break;
-            case SDLK_DOWN:
-				 (stage.get_camera_y() + 32) < stage.get_mapHeightpx() - stage.get_camera_h() ? stage.set_camera_y(stage.get_camera_y() + 32) : stage.set_camera_y(stage.get_mapHeightpx() - stage.get_camera_h());
-			 	 break;
-			case SDLK_LEFT:
-				 (stage.get_camera_x() - 32) > 0 ? stage.set_camera_x(stage.get_camera_x() - 32) : stage.set_camera_x(0);
-				 break;
-			case SDLK_RIGHT:
-				 (stage.get_camera_x() + 32) < stage.get_mapWidthpx() - stage.get_camera_w() ? stage.set_camera_x(stage.get_camera_x() + 32) : stage.set_camera_x(stage.get_mapWidthpx() - stage.get_camera_w());
+			case SDLK_RIGHT: player.set_faceing_left(false);
 			 	 break;
         default: break;
         }
+    }else if(event.type == SDL_KEYUP){
+        switch(event.key.keysym.sym){
+            case SDLK_LEFT: if(keystate[SDLK_RIGHT]){player.set_faceing_left(false);}break;
+            case SDLK_RIGHT: if(keystate[SDLK_LEFT]){player.set_faceing_left(true);}break;
+            default: break;
+        }
     }
-}
 
-void Engine::display_stage(){
+
+
+}
+void Engine::update_objects(){
+    player.move_player(stage);
+}
+void Engine::display(){
+  stage.center_camera(player.get_x(), player.get_y(), player.get_w(), player.get_h());
   stage.display_terrain(screen);
+  player.display_player(screen, stage.get_camera_x(), stage.get_camera_y());
 }
 
