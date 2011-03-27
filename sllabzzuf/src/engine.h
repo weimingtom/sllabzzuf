@@ -4,6 +4,7 @@
 #include "SDL/SDL.h"
 #include "timer.h"
 #include "stage.h"
+#include "player.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -13,11 +14,14 @@
 class Engine{
 private:
 
+SDL_Surface *screen;
+
 Timer fps;
+Player player;
 Stage stage;
 
 SDL_Event event;
-SDL_Surface *screen;
+
 bool quit;
 void gather_input();
 
@@ -29,7 +33,8 @@ public:
     void get_time();
     void framerate_limit();
     void check_events();
-    void display_stage();
+    void display();
+    void update_objects();
 };
 
 

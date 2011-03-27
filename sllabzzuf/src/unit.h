@@ -3,15 +3,14 @@
 #include "object.h"
 
 class Unit: public Object{
-    private:
+    protected:
     int weight, max_hp, hp;
     public:
     Unit();
     Unit(int new_x, int new_y, int new_max_hp);
-    void move_x(int x_speed);
-    void move_y(int y_speed);
+    void add_hp(int amount);
     int get_weight();
-    int get_current_hp();
+    int get_hp();
     bool is_alive();
 };
 

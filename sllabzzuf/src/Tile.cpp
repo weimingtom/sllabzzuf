@@ -23,7 +23,6 @@ int Tile::get_type(){
 void Tile::set_type(int t){
 	type = t;
 }
-
 SDL_Rect *Tile::get_box(){
     return &box;
 }

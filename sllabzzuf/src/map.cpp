@@ -10,11 +10,11 @@ Map::Map(){
 
 
 bool Map::loadMap(std::string filepath){
-	std::cout << "Loading map with filepath " << filepath << "\n";
+	std::cout << "Loading map " << filepath << "\n";
 	std::ifstream mapFile(filepath.c_str(), std::ifstream::in);
 
-	if(mapFile == NULL && filepath != "data/newgame.map"){
-		mapFileLocation = "data/newgame.map";
+	if(mapFile == NULL && filepath != "data/ice1.map"){
+		mapFileLocation = "data/ice1.map";
 		std::cout << " Map filepath was invalid loading default.map.\n";
 		if(loadMap(mapFileLocation)){
 			mapFile.close();
@@ -22,7 +22,7 @@ bool Map::loadMap(std::string filepath){
 		}
 	}
 	if(mapFile != NULL){
-		std::cout << "Loading map " << filepath << "\n";
+		std::cout << "ifstream successfull, loading tiles. " << filepath << "\n";
 		mapFileLocation = filepath;
 		tileLayers.clear(); //TODO: clear layers of tiles correctly.
 
@@ -101,6 +101,76 @@ int Map::get_Heightpx(){
 	return height*32;
 }
 
+bool Map::solid_collision(int direction, int x, int y, int w, int h){
+    std::cout << "\n";
+    if((x< 0) || (x+w > get_Widthpx()) || (y<0) || (y+h > get_Heightpx())){
+    //std::cout<<"Map boundry collision.\n";
+    return true;
+    }
+    int type, tile_x, tile_y;
+    tile_x = (x/32)*32;
+    tile_y = (y/32)*32;
+    //top left collision tile
+    if(direction==0 || direction==3){
+    type = get_Tiles(0)[x/32 + (y/32*get_Width())]->get_type();
+    //std::cout << "testing top left collision with     (" << tile_x/32 << "," << tile_y/32 << ") px:(" << tile_x << "," << tile_y << ") type " << type << ": ";
+    if(tile_test(type, tile_x, tile_y, x, y, w, h))
+    return true;
+    }
+    //top right collision tile
+    if(direction==0 || direction==1){
+    type = get_Tiles(0)[x/32+ 1 + (y/32*get_Width())]->get_type();
+    //std::cout << "testing top right collision with    (" << tile_x/32 + 1 << "," << tile_y/32 << ") px:(" << tile_x+32 << "," << tile_y << ") type " << type << ": ";
+    if(tile_test(type, tile_x+32, tile_y, x, y, w, h))
+    return true;
+    }
+    //bottom left collision tile
+    if(direction==2||direction==3){
+    type = get_Tiles(0)[x/32 + (((y)/32+1)*get_Width())]->get_type();
+    //std::cout << "testing bottom left collision with  (" << tile_x/32 << "," << tile_y/32+1 << ") px:(" << tile_x << "," << tile_y+32 << ") type " << type << ": ";
+    if(tile_test(type, tile_x, tile_y+32, x, y, w, h))
+    return true;
+    }
+    //bottom right collision tile
+    if(direction==2||direction==1){
+    type = get_Tiles(0)[x/32 + 1 + ((y/32+1)*get_Width())]->get_type();
+    //std::cout << "testing bottom right collision with (" << tile_x/32+1 << "," << tile_y/32+1 << ") px:(" << tile_x+32 << "," << tile_y+32 << ") type " << type << ": ";
+    if(tile_test(type, tile_x+32, tile_y+32, x, y, w, h))
+    return true;
+    }
+    return false;
+}
+
+bool Map::tile_test(int type, int tile_x, int tile_y, int x, int y, int w, int h){
+    if(type==33){
+            if((tile_y + 32 > y)&&(tile_y+16 < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
+            //std::cout <<"collision!\n";
+            return true;
+        }
+    }else if(type==30){
+            if((tile_y + 16 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
+            //std::cout <<"collision!\n";
+            return true;
+        }
+    }else if(type==31){
+            if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x+16<x+w)){
+            //std::cout <<"collision!\n";
+            return true;
+        }
+    }else if(type==32){
+            if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+16>x)&&(tile_x<x+w)){
+            //std::cout <<"collision!\n";
+            return true;
+        }
+    }else if(type!=0){
+        if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
+            //std::cout <<"collision!\n";
+            return true;
+        }
+    }
+    //std::cout << "no collision.\n";
+    return false;
+}
 /**
  * Draw the background using the bottom right corner of the tileSheet (2x2 squares across the entire background)
  */
