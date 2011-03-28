@@ -4,7 +4,7 @@ Engine::Engine(){
     quit=false;
 
     SDL_Init( SDL_INIT_EVERYTHING);
-    SDL_WM_SetCaption( "Fuzzball Game v0.0.2", NULL );
+    SDL_WM_SetCaption( "Fuzzball Game v0.0.3", NULL );
 
     screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, SDL_SWSURFACE);
     if(screen==NULL){
@@ -105,5 +105,7 @@ void Engine::display(){
   stage.center_camera(player.get_x(), player.get_y(), player.get_w(), player.get_h());
   stage.display_terrain(screen);
   player.display_player(screen, stage.get_camera_x(), stage.get_camera_y());
+  player.manage_particle_systems();
+  player.display_all_particles(screen, stage.get_camera_x(), stage.get_camera_y(), stage.get_mapWidthpx(), stage.get_mapHeightpx());
 }
 

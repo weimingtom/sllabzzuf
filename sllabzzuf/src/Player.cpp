@@ -1,4 +1,5 @@
 #include "player.h"
+#include <time.h>
 #include <stdlib.h>
 
 Player::Player(){
@@ -15,9 +16,10 @@ Player::Player(){
     x_acceleration=0;
     y_acceleration=0;
     jump_timer=0;
-    dash_timer;
+    dash_timer=0;
     dash_direction;
     active_spell=1;
+    srand(time(0));
 }
 int Player::get_active_spell(){
     return active_spell;
@@ -77,11 +79,32 @@ void Player::move_player(Stage stage){
             case 3: x_acceleration -= dash_timer*2;y_acceleration=y_acceleration/2;break;
             default:break;
         }
+        Uint8 red, green, blue;
+        Uint8 redend, greenend, blueend;
+        Uint8 color[3];
+        Uint8 end_color[3];
+        float radians=atan2((float)y_velocity,(float)x_velocity);
+        for (std::list<ParticleSystem>::iterator it=systems.begin(); it!=systems.end(); ++it){
+            it->remove_dead();
+            it->update_all();
+            red=(rand() %150) + 80;
+            green=(rand() %50) + 10;
+            blue=(rand() %50) +10;
+            redend=255-(rand()%100);
+            greenend=250-(rand()%50);
+            blueend=250-(rand()%50);
+            color[0]=red;
+            color[1]=green;
+            color[2]=blue;
+            end_color[0]=redend;
+            end_color[1]=greenend;
+            end_color[2]=blueend;
+            it->particle_factory(x+16,y+16,color,(rand()%20)+10,end_color,radians,5);
+        }
         dash_timer-=1;
-    }else if(dash_timer>-10){
+    }else if(dash_timer>-20){
         dash_timer-=1;
     }
-
     x_velocity=x_velocity+x_acceleration;
     y_velocity=y_velocity+y_acceleration;
 
@@ -149,18 +172,31 @@ void Player::move_player(Stage stage){
         y_velocity=0;
     }
 }
+void Player::manage_particle_systems(){
+    float radians=atan2((float)y_velocity,(float)x_velocity);
+    for (std::list<ParticleSystem>::iterator it=systems.begin(); it!=systems.end(); ++it){
+        it->update_all();
+        it->remove_dead();
+    }
+}
+void Player::display_all_particles(SDL_Surface *screen, int camera_x, int camera_y, int mapw, int maph){
+     for (std::list<ParticleSystem>::iterator it=systems.begin(); it!=systems.end(); ++it){
+        it->draw_particles(screen, camera_x, camera_y, mapw, maph);
+     }
+}
 void Player::dash(int direction){
-    std::cout << "dash() called\n";
-    if(dash_timer<=-10){
+    if(dash_timer<=-20){
     dash_direction=direction;
     dash_timer=7;
+    ParticleSystem newsystem(30);
+    systems.push_back(newsystem);
     }
 }
 void Player::jump(Stage stage){
     if(!move_y(1, x, y, stage)){
         jump_timer=3;
         if(dash_timer<=0){
-        dash_timer=-10;
+        dash_timer=-20;
         }
     }else{
     move_y(-1, x, y, stage);

@@ -2,6 +2,7 @@
 #define PLAYER_H_INCLUDED
 
 #include "unit.h"
+#include "particlesystem.h"
 
 class Player: public Unit{
     private:
@@ -23,6 +24,7 @@ class Player: public Unit{
     int y_velocity;
     int x_acceleration;
     int y_acceleration;
+    std::list<ParticleSystem> systems;
     std::string map_filename;
     SDL_Rect fuzzRIGHT[3];
     SDL_Rect fuzzLEFT[3];
@@ -34,7 +36,7 @@ class Player: public Unit{
     void load_sprite();
     void clip_fuzzy();
     void display_player(SDL_Surface *screen, int camera_x, int camera_y);
-
+    void display_all_particles(SDL_Surface *screen, int camera_x, int camera_y, int mapw, int maph);
     void setFrame(int framenum);
     void nextFrame();
     int get_active_spell();
@@ -54,7 +56,7 @@ class Player: public Unit{
     void move_player(Stage stage);
     void jump(Stage stage);
     void dash(int direction);
-
+    void manage_particle_systems();
 };
 
 #endif // PLAYER_H_INCLUDED

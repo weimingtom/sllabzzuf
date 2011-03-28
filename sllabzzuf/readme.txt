@@ -1,4 +1,4 @@
-version 0.0.2
+version 0.0.3
 
 -It reads the newgame.map file in /data 
 -renders the map in roughly the same way as the level editor. 
@@ -16,6 +16,6 @@ spam z+x+z+x etc to zoom forward, will consume MP like crazy though.
 
 *****TO DO******
 -triangle tiles are still considered squares in collision detection
--particle effects for dash and the yet to be made attack function.
+-attack + its own particle effects.
 -progressing to the next map
 -auto pause/display text notices
