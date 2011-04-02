@@ -35,6 +35,10 @@ public:
 	void set_TileSheet(std::string filename);
 	void drawMap(SDL_Surface* screen, SDL_Rect* camera);
 	void drawMapSlice(SDL_Surface* screen, SDL_Rect* camera, int topLayer, int bottomLayer = 0);
+	void rotateRight();
+	void rotateUp();
+	void rotateLeft();
+	void rotateTileUp(Tile* tile);
 	bool loadMap(std::string filepath);
 	//direction: 0= up, 1=right, 2=down, 3=left
 	bool solid_collision(int direction, int x, int y, int w=32, int h=32);

@@ -62,6 +62,69 @@ bool Map::loadMap(std::string filepath){
 	mapFile.close();
 	return false;
 }
+void Map::rotateRight(){
+}
+void Map::rotateLeft(){
+}
+void Map::rotateUp(){
+    int type;
+	for(std::map< int,std::vector<Tile*> >::iterator layer = tileLayers.begin(); layer != tileLayers.end(); layer++){
+		for(std::vector<Tile*>::iterator tile = layer->second.begin(); tile != layer->second.end(); tile++){
+		    Tile *current= *tile;
+			type= current->get_type();
+			switch(type){
+			case 3: type=27; break;
+			case 4: type=26; break;
+			case 5: type=25; break;
+			case 6: type=24; break;
+			case 7: type=23; break;
+			case 8: type=22; break;
+			case 9: type=21; break;
+			case 10: type=20; break;
+			case 11: type=19; break;
+			case 12: type=18; break;
+			case 13: type=17; break;
+            case 14: type=16; break;
+            case 16: type=14; break;
+            case 17: type=13; break;
+			case 18: type=12; break;
+			case 19: type=11; break;
+			case 20: type=10; break;
+            case 21: type=9; break;
+			case 22: type=8; break;
+			case 23: type=7; break;
+			case 24: type=6; break;
+			case 25: type=5; break;
+			case 26: type=4; break;
+			case 27: type=3; break;
+			case 28: type=50; break;
+			case 29: type=49; break;
+			case 30: type=33; break;
+            case 31: type=32; break;
+            case 32: type=31; break;
+            case 33: type=30; break;
+			case 35: type=43; break;
+			case 36: type=42; break;
+			case 42: type=36; break;
+			case 43: type=35; break;
+			case 49: type=29; break;
+			case 50: type=28; break;
+			default: break;
+			}
+			rotateTileUp(*tile);
+            current->set_type(type);
+            *tile = current;
+		}
+	}
+}
+void Map::rotateTileUp(Tile* tile){
+    	int x=tile->get_box()->x;
+		int y=tile->get_box()->y;
+		x=(width)-x-1;
+		y=(height)-y-1;
+		tile->set_x(x);
+		tile->set_y(y);
+}
 
 Map::~Map(){
 
@@ -284,16 +347,16 @@ bool Map::tile_test(int type, int tile_x, int tile_y, int x, int y, int w, int h
             }
     }else if(type!=0){
         if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
-            //std::cout <<"collision!\n";
             return true;
         }
     }
-    //std::cout << "no collision.\n";
     return false;
 }
 /**
  * Draw the background using the bottom right corner of the tileSheet (2x2 squares across the entire background)
  */
+
+
 void Map::drawBackground(SDL_Surface* screen){
 		SDL_Rect tileLocation;
 		tileLocation.h = 64;

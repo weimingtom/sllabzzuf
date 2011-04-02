@@ -4,7 +4,7 @@ Engine::Engine(){
     quit=false;
 
     SDL_Init( SDL_INIT_EVERYTHING);
-    SDL_WM_SetCaption( "Fuzzball Game v0.0.3", NULL );
+    SDL_WM_SetCaption( "Fuzzball Game v0.0.4", NULL );
 
     screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, SDL_SWSURFACE);
     if(screen==NULL){
@@ -72,6 +72,10 @@ void Engine::gather_input(){
     if( event.type == SDL_KEYDOWN )
     {
         switch(event.key.keysym.sym){
+            case SDLK_w: stage.rotate(0);
+            player.set_x(stage.get_mapWidthpx()-32-player.get_x());
+            player.set_y(stage.get_mapHeightpx()-32-player.get_y());
+            break;
             case SDLK_z: player.jump(stage);break;
             case SDLK_x: if(keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT] && !keystate[SDLK_UP] && !keystate[SDLK_DOWN]){
                             player.dash(3);

@@ -46,6 +46,8 @@ class Player: public Unit{
     int get_spells_known();
     std::string get_map_filename();
     void set_map_filename(std::string filename);
+    void set_x(int new_x);
+    void set_y(int new_y);
     void add_spell_bonus(int amount);
     void add_max_hp(int amount);
     void add_mp(int amount);

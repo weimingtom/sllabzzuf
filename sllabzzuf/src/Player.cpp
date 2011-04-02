@@ -289,6 +289,12 @@ spells_known += amount;
 void Player::set_faceing_left(bool face){
 faceing_left=face;
 }
+void Player::set_x(int new_x){
+    x=new_x;
+}
+void Player::set_y(int new_y){
+    y=new_y;
+}
 void Player::setFrame(int framenum){
 frame=framenum;
 }

@@ -1,18 +1,14 @@
-version 0.0.3
+version 0.0.4
 
--It reads the newgame.map file in /data 
--renders the map in roughly the same way as the level editor. 
 -Arrow keys to walk.
 -Z to jump
 -X + arrow to dash
--The game loop is almost all there
--classes for everything
--Unit, currently unused, inherits from Object.
+-W to rotate gravity 180
 
 -It's not a bug; its a feature: jumping cancels out dash's recharch time.
 spam z+x+z+x etc to zoom forward, will consume MP like crazy though.
 *****BUGS*******
--For some reason you cannot dash for the first 5 seconds or so.
+-collision is ALL messed up when rotated 180
 
 *****TO DO******
 -triangle tiles are still considered squares in collision detection
