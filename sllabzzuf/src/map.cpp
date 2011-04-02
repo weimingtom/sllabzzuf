@@ -1,4 +1,5 @@
 #include "map.h"
+#include <algorithm>
 
 Map::Map(){
 	height = 0;
@@ -115,6 +116,7 @@ void Map::rotateUp(){
             current->set_type(type);
             *tile = current;
 		}
+		reverse(layer->second.begin(), layer->second.end());
 	}
 }
 void Map::rotateTileUp(Tile* tile){
