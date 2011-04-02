@@ -28,6 +28,8 @@ public:
     //Get the tile type
     int get_type();
     void set_type(int t);
+    void set_x(int new_x);
+    void set_y(int new_y);
     //Get the collision box
     SDL_Rect *get_box();
 };

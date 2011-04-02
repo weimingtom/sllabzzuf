@@ -54,7 +54,11 @@ void Stage::set_camera_x(int x){
 void Stage::set_camera_y(int y){
     camera.set_y(y);
 }
-
+void Stage::rotate(int direction){
+    if(direction==0){
+        map.rotateUp();
+    }
+}
 void Stage::center_camera(int player_x, int player_y, int player_w, int player_h){
     camera.set_x((player_x + player_w / 2 ) - SCREEN_WIDTH / 2);
     camera.set_y((player_y + player_h / 2 ) - SCREEN_HEIGHT / 2);

@@ -24,6 +24,7 @@ public:
     int get_mapWidthpx();
     int get_theme();
     int get_gravity();
+    void rotate(int direction);
     void center_camera(int player_x, int player_y, int player_w, int player_h);
     bool object_hitTest(int direction, int x, int y);
 
