@@ -142,26 +142,146 @@ bool Map::solid_collision(int direction, int x, int y, int w, int h){
 }
 
 bool Map::tile_test(int type, int tile_x, int tile_y, int x, int y, int w, int h){
+    int relative_x= x+(w/3)-tile_x;
+    int relative_y= y-tile_y;
+    int relative_w= x+(2*w/3)-tile_x;
+    int relative_h= y+h-tile_y;
     if(type==33){
-            if((tile_y + 32 > y)&&(tile_y+16 < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
-            //std::cout <<"collision!\n";
+        if((tile_y + 32 > y)&&(tile_y+16 < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
             return true;
         }
     }else if(type==30){
-            if((tile_y + 16 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
-            //std::cout <<"collision!\n";
+        if((tile_y + 16 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
             return true;
         }
     }else if(type==31){
-            if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x+16<x+w)){
-            //std::cout <<"collision!\n";
+        if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x+16<x+w)){
             return true;
         }
     }else if(type==32){
-            if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+16>x)&&(tile_x<x+w)){
-            //std::cout <<"collision!\n";
+        if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+16>x)&&(tile_x<x+w)){
             return true;
         }
+    }else if (type==3){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y+16 && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))<(relative_h*2)-32){
+                    return true;
+                }
+            }
+    }else if (type==4){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))<relative_h*2){
+                    return true;
+                }
+            }
+    }else if (type==5){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if(relative_x<((relative_h*2))){
+                    return true;
+                }
+            }
+    }else if (type==6){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y+16 && y<tile_y+32){
+                if(relative_x<(relative_h*2)-32){
+                    return true;
+                }
+            }
+    }else if (type==11){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))>relative_y){
+                    return true;
+                }
+            }
+    }else if (type==12){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if(relative_x>relative_y){
+                    return true;
+                }
+            }
+    }else if (type==18){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if(relative_x<relative_h){
+                    return true;
+                }
+            }
+    }else if (type==19){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))<relative_h){
+                    return true;
+                }
+            }
+    }else if (type==24){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if(relative_x>((relative_h*2))){
+                    return true;
+                }
+            }
+    }else if (type==25){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if(relative_x>(relative_y*2)-32){
+                    return true;
+                }
+            }
+    }else if (type==26){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))>(relative_y*2)-32){
+                    return true;
+                }
+            }
+    }else if (type==27){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))>relative_y*2){
+                    return true;
+                }
+            }
+    }else if (type==28){
+            if(x+w > tile_x+16 && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))*2<relative_h){
+                    return true;
+                }
+            }
+    }else if (type==29){
+            if(x+w > tile_x && x < tile_x+16 && y+h > tile_y && y<tile_y+32){
+                if((relative_x*2)<relative_h){
+                    return true;
+                }
+            }
+    }else if (type==35){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))*2 -32<relative_h){
+                    return true;
+                }
+            }
+    }else if (type==36){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((relative_x*2)-32<relative_h){
+                    return true;
+                }
+            }
+    }else if (type==42){
+            if(x+w > tile_x && x < tile_x && y+h > tile_y && y<tile_y+32){
+                if((relative_x*2)>relative_y){
+                    return true;
+                }
+            }
+    }else if (type==43){
+            if(x+w > tile_x && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))*2>relative_y){
+                    return true;
+                }
+            }
+    }else if (type==49){
+            if(x+w > tile_x+16 && x < tile_x+32 && y+h > tile_y && y<tile_y+32){
+                if((relative_x*2)-32>relative_y){
+                    return true;
+                }
+            }
+    }else if (type==50){
+            if(x+w > tile_x && x < tile_x+16 && y+h > tile_y && y<tile_y+32){
+                if((tile_x+32 - (x+(2*w/3)))*2 -32 > relative_y){
+                    return true;
+                }
+            }
     }else if(type!=0){
         if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
             //std::cout <<"collision!\n";
