@@ -16,6 +16,7 @@ private:
 	SDL_Rect getTileScreenCoord(Tile* tile, SDL_Rect* camera);
 	void drawBackground(SDL_Surface* screen);
 	void blitTile(SDL_Surface* screen, SDL_Rect* camera, Tile* tile);
+	bool finished;
 
 public:
 	Map();
@@ -45,5 +46,7 @@ public:
 	//direction: 0= up, 1=right, 2=down, 3=left
 	bool solid_collision(int direction, int x, int y, int w=32, int h=32);
 	bool tile_test(int type, int tile_x, int tile_y, int x, int y, int w, int h);
+	bool is_done(int x, int y);
+	void finish_map();
 };
 #endif // MAP_H_INCLUDED

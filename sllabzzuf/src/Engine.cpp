@@ -4,13 +4,15 @@ Engine::Engine(){
     quit=false;
 
     SDL_Init( SDL_INIT_EVERYTHING);
-    SDL_WM_SetCaption( "Fuzzball Game v0.0.5", NULL );
+    SDL_WM_SetCaption( "Fuzzball Game v0.0.6", NULL );
 
     screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, SDL_SWSURFACE);
     if(screen==NULL){
     std::cout << "screen is still NULL\n";
     quit=true;
     }
+    player.load_path();
+    player.spawn();
     stage.newMap(player.get_map_filename());
     player.load_sprite();
     Uint8 *SDL_GetKeyState(int *numkeys);
@@ -76,16 +78,17 @@ void Engine::gather_input(){
             player.set_x(stage.get_mapWidthpx()-32-player.get_x());
             player.set_y(stage.get_mapHeightpx()-32-player.get_y());
             break;
-            case SDLK_d: stage.rotate(1);
+            case SDLK_a: stage.rotate(1);
             int tempx=player.get_x();
             player.set_x(player.get_y());
             player.set_y(stage.get_mapHeightpx()-32-tempx);
             break;
-            case SDLK_a: stage.rotate(3);
+            case SDLK_d: stage.rotate(3);
             int tempy=player.get_y();
             player.set_y(player.get_x());
             player.set_x(stage.get_mapWidthpx()-32-tempy);
             break;
+            case SDLK_RETURN: stage.finish_map();break;
             case SDLK_z: player.jump(stage);break;
             case SDLK_x: if(keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT] && !keystate[SDLK_UP] && !keystate[SDLK_DOWN]){
                             player.dash(3);
@@ -121,5 +124,12 @@ void Engine::display(){
   player.display_player(screen, stage.get_camera_x(), stage.get_camera_y());
   player.manage_particle_systems();
   player.display_all_particles(screen, stage.get_camera_x(), stage.get_camera_y(), stage.get_mapWidthpx(), stage.get_mapHeightpx());
+  if(stage.is_done(player.get_x(), player.get_y())){
+    player.nextMap();
+    std::cout<<"newMap(" << player.get_map_filename() << ")\n";
+    stage.newMap(player.get_map_filename());
+    player.spawn();
+    player.save_profile();
+  }
 }
 

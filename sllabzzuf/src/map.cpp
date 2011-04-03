@@ -7,6 +7,7 @@ Map::Map(){
 	mapFileLocation = "";
 	tileSheet = new TileSheet();
 	theme=0;
+	finished=false;
 }
 
 
@@ -16,7 +17,7 @@ bool Map::loadMap(std::string filepath){
 
 	if(mapFile == NULL && filepath != "data/ice1.map"){
 		mapFileLocation = "data/ice1.map";
-		std::cout << " Map filepath was invalid loading default.map.\n";
+		std::cout << " Map filepath was invalid loading ice1.map.\n";
 		if(loadMap(mapFileLocation)){
 			mapFile.close();
 			return true;
@@ -310,7 +311,7 @@ int Map::get_Heightpx(){
 
 bool Map::solid_collision(int direction, int x, int y, int w, int h){
     std::cout << "\n";
-    if((x< 0) || (x+w > get_Widthpx()) || (y<0) || (y+h > get_Heightpx())){
+    if((x< 0) || (x+w > get_Widthpx()) || (y<0) || (y+h >= get_Heightpx())){
     //std::cout<<"Map boundry collision.\n";
     return true;
     }
@@ -489,12 +490,21 @@ bool Map::tile_test(int type, int tile_x, int tile_y, int x, int y, int w, int h
                     return true;
                 }
             }
+    }else if (type==52){
+        finish_map();
+        //std::cout<<"reached and exit.\n";
+        return false;
     }else if(type!=0){
         if((tile_y + 32 > y)&&(tile_y < y+h)&&(tile_x+32>x)&&(tile_x<x+w)){
             return true;
         }
     }
+
     return false;
+}
+void Map::finish_map(){
+    if(!finished)
+    finished=true;
 }
 /**
  * Draw the background using the bottom right corner of the tileSheet (2x2 squares across the entire background)
@@ -551,4 +561,9 @@ SDL_Rect Map::getTileScreenCoord(Tile* tile, SDL_Rect* camera){
 }
 void Map::set_TileSheet(std::string filename){
 	tileSheet->loadSheet(filename);
+}
+bool Map::is_done(int x, int y){
+    if(get_Tiles(0)[x/32 + (y/32*get_Width())]->get_type()==52 || get_Tiles(0)[x/32+ 1 + (y/32*get_Width())]->get_type()==52 || get_Tiles(0)[x/32 + (((y)/32+1)*get_Width())]->get_type()==52 || get_Tiles(0)[x/32 + 1 + ((y/32+1)*get_Width())]->get_type()==52)
+    return true;
+    return false;
 }

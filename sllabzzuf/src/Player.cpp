@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 Player::Player(){
-    map_filename="";
     load_profile();
     faceing_left=false;
     frame=1;
@@ -52,9 +51,11 @@ void Player::move_player(Stage stage){
     int surface_type=stage.get_theme();
     int x_vel, y_vel;
     int x_acc, y_acc;
-
+    int gravity = stage.get_gravity();
+    if(surface_type==1)
+    gravity=gravity/-2;
     x_acceleration=user_x_acc;
-    y_acceleration=user_y_acc+stage.get_gravity();
+    y_acceleration=user_y_acc+gravity;
 
     if(x_acceleration>3)
     x_acceleration=3;
@@ -67,7 +68,10 @@ void Player::move_player(Stage stage){
 
 
     if(jump_timer>0){
+        if(surface_type!=1)
         y_acceleration-=15;
+        else
+        y_acceleration+=15;
         jump_timer-=1;
     }
 
@@ -116,10 +120,14 @@ void Player::move_player(Stage stage){
     x_velocity=-15;
     else if(x_velocity<-6 )
     x_velocity=-6;
-    if(y_velocity<-15)
+    if(y_velocity<-15 && surface_type!=1)
     y_velocity=-15;
-    if(y_velocity>15)
+    if(y_velocity>15 && surface_type!=1)
     y_velocity=15;
+    if(y_velocity<-10 && surface_type==1)
+    y_velocity=-10;
+    if(y_velocity>10 && surface_type==1)
+    y_velocity=10;
 
     int x_moved = 0;
     int y_moved = 0;
@@ -167,7 +175,7 @@ void Player::move_player(Stage stage){
                 }
             }
         }
-    }if(!move_y(1, x, y, stage)){
+    }if((!move_y(1, x, y, stage) && gravity>0) || (!move_y(-1, x, y, stage)&& gravity<0)){
         y_acceleration=0;
         y_velocity=0;
     }
@@ -193,13 +201,24 @@ void Player::dash(int direction){
     }
 }
 void Player::jump(Stage stage){
-    if(!move_y(1, x, y, stage)){
-        jump_timer=3;
-        if(dash_timer<=0){
-        dash_timer=-20;
+    if(stage.get_theme()!=1){
+        if(!move_y(1, x, y, stage)){
+            jump_timer=3;
+            if(dash_timer<=0){
+            dash_timer=-20;
+            }
+        }else{
+        move_y(-1, x, y, stage);
         }
     }else{
-    move_y(-1, x, y, stage);
+        if(!move_y(-1, x, y, stage)){
+            jump_timer=3;
+            if(dash_timer<=0){
+            dash_timer=-20;
+            }
+        }else{
+        move_y(1, x, y, stage);
+        }
     }
 }
 void Player::display_player(SDL_Surface *screen, int camera_x, int camera_y){
@@ -213,7 +232,40 @@ void Player::display_player(SDL_Surface *screen, int camera_x, int camera_y){
         SDL_BlitSurface( sprite, &fuzzRIGHT[frame], screen, &offset );
     }
 }
-
+void Player::nextMap(){
+    map_number++;
+    x_velocity=0;
+    y_velocity=0;
+    x_acceleration=0;
+    y_acceleration=0;
+    dash_timer=0;
+}
+void Player::spawn(){
+    x = mapstarts.at(map_number*2);
+    y = mapstarts.at(map_number*2 +1);
+}
+void Player::load_path(){
+    std::cout<< "Loading map path\n";
+    std::ifstream path("data/default.path", std::ifstream::in);
+    if(path!=NULL){
+        std::string filename;
+        int coord;
+		std::cout << "ifstream successfull, loading map list.\n";
+        while(path.good()){
+        path >> filename;
+        maplist.push_back(filename);
+        path >> coord;
+        mapstarts.push_back(coord);
+        path >> coord;
+        mapstarts.push_back(coord);
+        std::cout<<"added " << filename << "\n";
+        }
+		path.close();
+        std::cout << "load path finished\n";
+	}else{
+    path.close();
+    }
+}
 void Player::load_profile(){
 	std::cout << "Loading profile.dat \n";
 	std::ifstream profile("data/profile.dat", std::ifstream::in);
@@ -221,9 +273,8 @@ void Player::load_profile(){
 	if(profile != NULL){
 		std::cout << "ifstream successfull, loading variables.\n";
 
-        profile >> map_filename;
-        profile >> x;
-        profile >> y;
+        profile >> path_name;
+        profile >> map_number;
         profile >> hp;
         profile >> max_hp;
         profile >> spell_bonus;
@@ -234,7 +285,8 @@ void Player::load_profile(){
 	}else{
     profile.close();
 	std::cout << "Loading profile.dat failed\nMaking a new one.\n";
-	map_filename = "newgame";
+	maplist.push_back("newgame");
+	maplist.push_back("game_over");
 	x = 128; y = 96; hp = 5; max_hp = 5; spell_bonus = 0; spells_known =1;
 	save_profile();
 	load_profile();
@@ -243,8 +295,10 @@ void Player::load_profile(){
 }
 
 void Player::save_profile(){
+    if(map_number==maplist.size()-1)
+    map_number=0;
     std::ofstream save("data/profile.dat");
-    save<< map_filename<<"\n"<<x<<" "<<y<<"\n"<<hp<<" "<<max_hp<<" "<<spell_bonus<<" "<<spells_known<<"\n";
+    save<< path_name<<" "<<map_number<<"\n"<<hp<<" "<<max_hp<<" "<<spell_bonus<<" "<<spells_known<<"\n";
     save.close();
 }
 int Player::get_max_hp(){
@@ -264,11 +318,7 @@ return spells_known;
 }
 
 std::string Player::get_map_filename(){
-return map_filename;
-}
-
-void Player::set_map_filename(std::string filename){
-map_filename = filename;
+    return maplist.at(map_number);
 }
 
 void Player::add_spell_bonus(int amount){

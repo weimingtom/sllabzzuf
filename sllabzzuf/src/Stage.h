@@ -27,6 +27,8 @@ public:
     void rotate(int direction);
     void center_camera(int player_x, int player_y, int player_w, int player_h);
     bool object_hitTest(int direction, int x, int y);
+    bool is_done(int x, int y);
+    void finish_map();
 
 };
 

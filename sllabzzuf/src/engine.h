@@ -24,6 +24,7 @@ SDL_Event event;
 
 bool quit;
 void gather_input();
+bool finished;
 
 public:
     Engine();
