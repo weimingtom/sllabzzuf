@@ -1,17 +1,18 @@
-version 0.0.4
+version 0.0.5
 
 -Arrow keys to walk.
 -Z to jump
 -X + arrow to dash
+-A to rotate gravity 90 left
 -W to rotate gravity 180
+-D to rotate gravity 90 right
 
--It's not a bug; its a feature: jumping cancels out dash's recharch time.
-spam z+x+z+x etc to zoom forward, will consume MP like crazy though.
+
 *****BUGS*******
--collision is ALL messed up when rotated 180
+Segfault if touch the bottom of the map
+a coulple triangles are possible to embedd yourself in.
 
 *****TO DO******
--triangle tiles are still considered squares in collision detection
 -attack + its own particle effects.
 -progressing to the next map
 -auto pause/display text notices
