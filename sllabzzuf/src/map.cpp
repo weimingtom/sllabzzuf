@@ -64,8 +64,150 @@ bool Map::loadMap(std::string filepath){
 	return false;
 }
 void Map::rotateRight(){
+      int type = width;
+      width = height;
+      height = type;
+	for(std::map< int,std::vector<Tile*> >::iterator layer = tileLayers.begin(); layer != tileLayers.end(); layer++){
+		for(std::vector<Tile*>::iterator tile = layer->second.begin(); tile != layer->second.end(); tile++){
+		    Tile *current= *tile;
+			type= current->get_type();
+			switch(type){
+			case 3: type=49; break;
+			case 4: type=42; break;
+			case 5: type=35; break;
+			case 6: type=28; break;
+			case 7: type=21; break;
+			case 8: type=14; break;
+			case 9: type=7; break;
+			case 10: type=17; break;
+			case 11: type=18; break;
+			case 12: type=11; break;
+			case 13: type=10; break;
+            case 14: type=22; break;
+            case 16: type=8; break;
+            case 17: type=20; break;
+			case 18: type=19; break;
+			case 19: type=12; break;
+			case 20: type=13; break;
+            case 21: type=23; break;
+			case 22: type=16; break;
+			case 23: type=9; break;
+			case 24: type=50; break;
+			case 25: type=43; break;
+			case 26: type=36; break;
+			case 27: type=29; break;
+			case 28: type=24; break;
+			case 29: type=3; break;
+			case 30: type=32; break;
+            case 31: type=30; break;
+            case 32: type=33; break;
+            case 33: type=31; break;
+            case 34: type=41; break;
+			case 35: type=25; break;
+			case 36: type=4; break;
+			case 41: type=34; break;
+			case 42: type=26; break;
+			case 43: type=5; break;
+			case 49: type=27; break;
+			case 50: type=6; break;
+			default: break;
+			}
+			rotateTileRight(*tile);
+            current->set_type(type);
+            *tile = current;
+		}
+		std::vector<Tile*> holding_vector;
+		for(int i=0; i<height; i++){
+            for(int j=0; j<width; j++){
+                holding_vector.push_back(layer->second.at((height- i - 1 ) + j*height));
+            }
+		}
+		layer->second.clear();
+		for(int k=0; k<holding_vector.size(); k++){
+        layer->second.push_back(holding_vector.at(k));
+		}
+		//reverse(layer->second.begin(), layer->second.end());
+	}
+}
+void Map::rotateTileRight(Tile* tile){
+    	int x=tile->get_box()->y;
+		int y=tile->get_box()->x;
+		y=(height)-y-1;
+		tile->set_x(x);
+		tile->set_y(y);
 }
 void Map::rotateLeft(){
+      int type = width;
+      width = height;
+      height = type;
+	for(std::map< int,std::vector<Tile*> >::iterator layer = tileLayers.begin(); layer != tileLayers.end(); layer++){
+		for(std::vector<Tile*>::iterator tile = layer->second.begin(); tile != layer->second.end(); tile++){
+		    Tile *current= *tile;
+			type= current->get_type();
+			switch(type){
+			case 3: type=29; break;
+			case 4: type=36; break;
+			case 5: type=43; break;
+			case 6: type=50; break;
+			case 7: type=9; break;
+			case 8: type=16; break;
+			case 9: type=23; break;
+			case 10: type=13; break;
+			case 11: type=12; break;
+			case 12: type=19; break;
+			case 13: type=20; break;
+            case 14: type=8; break;
+            case 16: type=22; break;
+            case 17: type=10; break;
+			case 18: type=11; break;
+			case 19: type=18; break;
+			case 20: type=17; break;
+            case 21: type=7; break;
+			case 22: type=14; break;
+			case 23: type=21; break;
+			case 24: type=28; break;
+			case 25: type=35; break;
+			case 26: type=42; break;
+			case 27: type=49; break;
+			case 28: type=6; break;
+			case 29: type=27; break;
+			case 30: type=31; break;
+            case 31: type=33; break;
+            case 32: type=30; break;
+            case 33: type=32; break;
+            case 34: type=41; break;
+			case 35: type=5; break;
+			case 36: type=26; break;
+			case 41: type=34; break;
+			case 42: type=4; break;
+			case 43: type=25; break;
+			case 49: type=3; break;
+			case 50: type=24; break;
+			default: break;
+			}
+			rotateTileLeft(*tile);
+            current->set_type(type);
+            *tile = current;
+		}
+		std::vector<Tile*> holding_vector;
+		for(int i=0; i<height; i++){
+            for(int j=0; j<width; j++){
+                holding_vector.push_back(layer->second.at(i + (width - j -1)*height));
+            }
+		}
+		layer->second.clear();
+		for(int k=0; k<holding_vector.size(); k++){
+        layer->second.push_back(holding_vector.at(k));
+		}
+		//reverse(layer->second.begin(), layer->second.end());
+	}
+}
+void Map::rotateTileLeft(Tile* tile){
+    	int x=tile->get_box()->y;
+		int y=tile->get_box()->x;
+		x=(width)-x-1;
+		tile->set_x(x);
+		tile->set_y(y);
 }
 void Map::rotateUp(){
     int type;

@@ -39,6 +39,8 @@ public:
 	void rotateUp();
 	void rotateLeft();
 	void rotateTileUp(Tile* tile);
+	void rotateTileRight(Tile* tile);
+	void rotateTileLeft(Tile* tile);
 	bool loadMap(std::string filepath);
 	//direction: 0= up, 1=right, 2=down, 3=left
 	bool solid_collision(int direction, int x, int y, int w=32, int h=32);

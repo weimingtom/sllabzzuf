@@ -55,8 +55,11 @@ void Stage::set_camera_y(int y){
     camera.set_y(y);
 }
 void Stage::rotate(int direction){
-    if(direction==0){
-        map.rotateUp();
+    switch(direction){
+        case 0: map.rotateUp();break;
+        case 1: map.rotateRight();break;
+        case 3: map.rotateLeft();break;
+        default:break;
     }
 }
 void Stage::center_camera(int player_x, int player_y, int player_w, int player_h){
