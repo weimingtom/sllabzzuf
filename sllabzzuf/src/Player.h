@@ -2,6 +2,7 @@
 #define PLAYER_H_INCLUDED
 
 #include "unit.h"
+#include <vector>
 #include "particlesystem.h"
 
 class Player: public Unit{
@@ -24,14 +25,18 @@ class Player: public Unit{
     int y_velocity;
     int x_acceleration;
     int y_acceleration;
+    std::vector<std::string> maplist;
+    std::vector<int> mapstarts;
     std::list<ParticleSystem> systems;
-    std::string map_filename;
+    std::string path_name;
+    int map_number;
     SDL_Rect fuzzRIGHT[3];
     SDL_Rect fuzzLEFT[3];
 
     public:
     Player();
     void load_profile();
+    void load_path();
     void save_profile();
     void load_sprite();
     void clip_fuzzy();
@@ -45,7 +50,6 @@ class Player: public Unit{
     int get_spell_bonus();
     int get_spells_known();
     std::string get_map_filename();
-    void set_map_filename(std::string filename);
     void set_x(int new_x);
     void set_y(int new_y);
     void add_spell_bonus(int amount);
@@ -59,6 +63,8 @@ class Player: public Unit{
     void jump(Stage stage);
     void dash(int direction);
     void manage_particle_systems();
+    void nextMap();
+    void spawn();
 };
 
 #endif // PLAYER_H_INCLUDED

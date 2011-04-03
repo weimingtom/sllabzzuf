@@ -75,3 +75,9 @@ void Stage::center_camera(int player_x, int player_y, int player_w, int player_h
         camera.set_y(get_mapHeightpx() - camera.get_h());
     }
 }
+bool Stage::is_done(int x, int y){
+    return map.is_done(x, y);
+}
+void Stage::finish_map(){
+    map.finish_map();
+}
