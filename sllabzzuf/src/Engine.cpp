@@ -1,11 +1,12 @@
 #include "engine.h"
+#include "SDL/SDL_mixer.h"
 
 Engine::Engine(){
     quit=false;
 
     SDL_Init( SDL_INIT_EVERYTHING);
-    SDL_WM_SetCaption( "Fuzzball Game v0.0.6", NULL );
-
+    SDL_WM_SetCaption( "Fuzzball Game v0.0.7", NULL );
+    SDL_ShowCursor(SDL_DISABLE);
     screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BPP, SDL_SWSURFACE);
     if(screen==NULL){
     std::cout << "screen is still NULL\n";
@@ -88,7 +89,9 @@ void Engine::gather_input(){
             player.set_y(player.get_x());
             player.set_x(stage.get_mapWidthpx()-32-tempy);
             break;
-            case SDLK_RETURN: stage.finish_map();break;
+            case SDLK_RETURN: if(keystate[SDLK_RALT] || keystate[SDLK_LALT]){if(screen->flags & SDL_FULLSCREEN){screen= SDL_SetVideoMode(WN); }else{screen= SDL_SetVideoMode(FS);}}break;
+            case SDLK_RALT: if(keystate[SDLK_RETURN]){if(screen->flags & SDL_FULLSCREEN){screen= SDL_SetVideoMode(WN); }else{screen= SDL_SetVideoMode(FS);}}break;
+            case SDLK_LALT: if(keystate[SDLK_RETURN]){if(screen->flags & SDL_FULLSCREEN){screen= SDL_SetVideoMode(WN); }else{screen= SDL_SetVideoMode(FS);}}break;
             case SDLK_z: player.jump(stage);break;
             case SDLK_x: if(keystate[SDLK_LEFT] && !keystate[SDLK_RIGHT] && !keystate[SDLK_UP] && !keystate[SDLK_DOWN]){
                             player.dash(3);

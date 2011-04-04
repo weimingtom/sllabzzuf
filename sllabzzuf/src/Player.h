@@ -4,9 +4,11 @@
 #include "unit.h"
 #include <vector>
 #include "particlesystem.h"
+#include "SoundBoard.h"
 
 class Player: public Unit{
     private:
+    SoundBoard sound;
     int frame;
     int framebuffer;
     int max_hp;

@@ -10,6 +10,8 @@
 #define WINDOW_HEIGHT 480
 #define WINDOW_BPP 32
 #define FRAMES_PER_SECOND 30
+#define WN 640, 480, 32, SDL_SWSURFACE|SDL_DOUBLEBUF
+#define FS 640, 480, 32, SDL_DOUBLEBUF|SDL_FULLSCREEN
 
 class Engine{
 private:
@@ -21,7 +23,7 @@ Player player;
 Stage stage;
 
 SDL_Event event;
-
+Mix_Chunk *dash;
 bool quit;
 void gather_input();
 bool finished;
