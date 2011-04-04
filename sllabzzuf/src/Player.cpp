@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 
+
 Player::Player(){
     load_profile();
     faceing_left=false;
@@ -194,8 +195,10 @@ void Player::display_all_particles(SDL_Surface *screen, int camera_x, int camera
 }
 void Player::dash(int direction){
     if(dash_timer<=-20){
+    std::cout << "sound.playEffect(1);\n";
+    sound.playEffect();
     dash_direction=direction;
-    dash_timer=7;
+    dash_timer=6;
     ParticleSystem newsystem(30);
     systems.push_back(newsystem);
     }

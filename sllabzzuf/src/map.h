@@ -5,11 +5,13 @@
 #include "SDL/SDL_image.h"
 #include "Tile.h"
 #include "TileSheet.h"
+//#include "block.h"
 
 class Map{
 private:
 	std::string mapFileLocation;
 	std::map< int, std::vector<Tile*> > tileLayers;
+	//std::vector<Block*> blocks;
 	Tile* wall;
 	int width, height, theme;
 	TileSheet *tileSheet;
@@ -36,6 +38,7 @@ public:
 	void set_TileSheet(std::string filename);
 	void drawMap(SDL_Surface* screen, SDL_Rect* camera);
 	void drawMapSlice(SDL_Surface* screen, SDL_Rect* camera, int topLayer, int bottomLayer = 0);
+	void drawBlocks(SDL_Surface* screen, SDL_Rect* camera);
 	void rotateRight();
 	void rotateUp();
 	void rotateLeft();

@@ -6,6 +6,7 @@
 class Stage{
 private:
     Map map;
+
     Camera camera;
     int gravity;
 public:
