@@ -39,8 +39,9 @@ bool Engine::running(){
 }
 
 void Engine::framerate_limit(){
-    if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
-        SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks());
+	int timeSpent = SDL_GetTicks() - lastTime;
+    if( timeSpent < 1000 / FRAMES_PER_SECOND )
+        SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - timeSpent);
 }
 
 void Engine::check_events(){
@@ -67,7 +68,7 @@ void Engine::check_events(){
 }
 
 void Engine::get_time(){
-    fps.start();
+    lastTime = SDL_GetTicks();
 }
 
 void Engine::gather_input(){
