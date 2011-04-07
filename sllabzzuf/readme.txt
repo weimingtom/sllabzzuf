@@ -11,6 +11,13 @@ version 0.0.7
 -It autosaves when you advance, and resets your save once you win.
 -now with sound
 *****BUGS*******
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The block class is not being treated like a class. It won't compile until we figure out what's wrong and fix it.
+
+
+
 a coulple triangles are possible to embedd yourself in.
 
 *****TO DO******

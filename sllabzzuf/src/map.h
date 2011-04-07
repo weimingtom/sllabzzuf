@@ -3,19 +3,19 @@
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-#include "Tile.h"
+//#include "Tile.h"
 #include "TileSheet.h"
-//#include "block.h"
+#include "Block.h"
 
 class Map{
 private:
 	std::string mapFileLocation;
 	std::map< int, std::vector<Tile*> > tileLayers;
-	//std::vector<Block*> blocks;
 	Tile* wall;
 	int width, height, theme;
 	TileSheet *tileSheet;
-	SDL_Rect getTileScreenCoord(Tile* tile, SDL_Rect* camera);
+    std::vector<Block*> blocks;
+    SDL_Rect getTileScreenCoord(Tile* tile, SDL_Rect* camera);
 	void drawBackground(SDL_Surface* screen);
 	void blitTile(SDL_Surface* screen, SDL_Rect* camera, Tile* tile);
 	bool finished;
@@ -38,7 +38,6 @@ public:
 	void set_TileSheet(std::string filename);
 	void drawMap(SDL_Surface* screen, SDL_Rect* camera);
 	void drawMapSlice(SDL_Surface* screen, SDL_Rect* camera, int topLayer, int bottomLayer = 0);
-	void drawBlocks(SDL_Surface* screen, SDL_Rect* camera);
 	void rotateRight();
 	void rotateUp();
 	void rotateLeft();
@@ -51,5 +50,8 @@ public:
 	bool tile_test(int type, int tile_x, int tile_y, int x, int y, int w, int h);
 	bool is_done(int x, int y);
 	void finish_map();
+    void drawBlocks(SDL_Surface* screen, SDL_Rect* camera);
+    std::vector<Block*> get_blocks();
+
 };
 #endif // MAP_H_INCLUDED

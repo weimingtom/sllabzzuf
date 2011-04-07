@@ -16,6 +16,18 @@ void Stage::display_terrain(SDL_Surface *screen){
     if(screen!=NULL)
     map.drawMap(screen, camera.get_bounds());
 }
+void Stage::display_objects(SDL_Surface *screen){
+    if(screen!=NULL)
+    map.drawBlocks(screen, camera.get_bounds());
+}
+void Stage::update_blocks(){
+    std::vector<Block*> blocks = map.get_blocks();
+    for(int i=blocks.begin(); i<blocks.end(); i++){
+        block->update(gravity, map.get_Tiles(0), map.get_Widthpx(), map.get_Heightpx());
+        }
+    }
+
+}
 void Stage::newMap(std::string mapname){
         std::cout << "about to load map: data/" << mapname <<".map\n";
         std::string filepath= "data/" + mapname + ".map";

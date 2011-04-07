@@ -120,10 +120,12 @@ void Engine::gather_input(){
 }
 void Engine::update_objects(){
     player.move_player(stage);
+    stage.update_blocks();
 }
 void Engine::display(){
   stage.center_camera(player.get_x(), player.get_y(), player.get_w(), player.get_h());
   stage.display_terrain(screen);
+  stage.display_blocks(screen);
   player.display_player(screen, stage.get_camera_x(), stage.get_camera_y());
   player.manage_particle_systems();
   player.display_all_particles(screen, stage.get_camera_x(), stage.get_camera_y(), stage.get_mapWidthpx(), stage.get_mapHeightpx());
