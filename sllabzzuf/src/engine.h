@@ -2,32 +2,29 @@
 #define ENGINE_H_INCLUDED
 
 #include "SDL/SDL.h"
-#include "Timer.h"
-#include "Stage.h"
-#include "Player.h"
+#include "timer.h"
+#include "stage.h"
+#include "player.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 #define WINDOW_BPP 32
 #define FRAMES_PER_SECOND 30
-#define WN 640, 480, 32, SDL_SWSURFACE|SDL_DOUBLEBUF
-#define FS 640, 480, 32, SDL_DOUBLEBUF|SDL_FULLSCREEN
 
 class Engine{
 private:
-	SDL_Surface *screen;
 
-	Timer fps;
-	Player player;
-	Stage stage;
+SDL_Surface *screen;
 
-	SDL_Event event;
-	Mix_Chunk *dash;
-	bool quit;
-	void gather_input();
-	bool finished;
+int lastTime;
+Player player;
+Stage stage;
 
-	int lastTicks;
+SDL_Event event;
+
+bool quit;
+void gather_input();
+bool finished;
 
 public:
     Engine();
