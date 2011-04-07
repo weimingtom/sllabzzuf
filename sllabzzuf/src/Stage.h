@@ -6,7 +6,6 @@
 class Stage{
 private:
     Map map;
-
     Camera camera;
     int gravity;
 public:
@@ -30,7 +29,8 @@ public:
     bool object_hitTest(int direction, int x, int y);
     bool is_done(int x, int y);
     void finish_map();
-
+    void display_objects(SDL_Surface *screen);
+    void update_blocks();
 };
 
 #endif // STAGE_H_INCLUDED

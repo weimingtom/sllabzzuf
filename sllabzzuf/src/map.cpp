@@ -10,18 +10,15 @@ Map::Map(){
 	finished=false;
 }
 
-/*void Map::void drawBlocks(SDL_Surface* screen, SDL_Rect* camera){
+void Map::drawBlocks(SDL_Surface* screen, SDL_Rect* camera){
     for(int i=blocks.begin(); i<blocks.end(); i++){
-        if(	(tile->get_box()->x*32 >= camera->x-32 				//if the tile is within the left side of the screen
-            && tile->get_box()->x*32 < camera->x+camera->w)				//if the tile is within the right side of the screen
-            && (tile->get_box()->y*32 >= camera->y-32 			//if the tile is within the top of the screen
-            && tile->get_box()->y*32 < camera->y+camera->h)){ 			//if the tile is within the bottom of the screen
-
-            //draw the tile to the screen
-            SDL_BlitSurface( tileSheet->get_Surface(), &tileSheet->getTileFromSheet(tile), screen, &getTileScreenCoord(tile,camera));
+        block->draw(screen, camera);
         }
     }
-}*/
+}
+std::vector<Block*> Map::get_blocks(){
+    return blocks;
+}
 bool Map::loadMap(std::string filepath){
 	std::cout << "Loading map " << filepath << "\n";
 	std::ifstream mapFile(filepath.c_str(), std::ifstream::in);
@@ -44,11 +41,21 @@ bool Map::loadMap(std::string filepath){
 		int object;
 		int object_x;
 		int object_y;
+		int num_objects;
 		std::vector<Tile*> currentTiles;
 		mapFile >> theme;
 		mapFile >> width; //in tiles
 		mapFile >> height; //in tiles
+		mapFile >> num_objects
 
+        for(int i=0; i<num_objects; i++){
+            mapFile >> object;
+            mapFile >> object_x;
+            mapFile >> object_y;
+            if(object==0)
+            blocks.push_back(new Block(object_x*32, object_y*32));
+
+        }
 		while(mapFile.good()){
 			mapFile >> layer;
 
@@ -65,14 +72,6 @@ bool Map::loadMap(std::string filepath){
 			tileLayers.insert(std::pair< int,std::vector<Tile*> >(layer, currentTiles));
 			currentTiles.clear();
 			std::cout << "Completed loading layer " << layer << " from .map\n";
-			/*if(mapFile.good()){
-            mapFile >> object;
-            mapFile >> object_x;
-            mapFile >> object_y;
-            if(object==0)
-            blocks.push_back(new Block(object_x*32, object_y*32));
-			}*/
-
 		}
 
 		wall = new Tile(-1,-1, 1);
